@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -10,25 +10,6 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [captchaValue, setCaptchaValue] = useState("");
-
-  // Cargar el script de reCAPTCHA dinámicamente
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://www.google.com/recaptcha/api.js";
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-
-    // Asigna la función al objeto global window para que el callback funcione
-    window.handleCaptcha = (token) => {
-      setCaptchaValue(token);
-    };
-
-    return () => {
-      delete window.handleCaptcha;
-    };
-  }, []);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const handleNavigation = (path) => {
@@ -40,16 +21,10 @@ const LoginPage = () => {
     e.preventDefault();
     setError("");
 
-    if (!captchaValue) {
-      setError("Por favor, verifica el CAPTCHA.");
-      return;
-    }
-
     try {
       const response = await axios.post("https://github-back-alumnos-8.onrender.com/api/users/login", {
         email,
         password,
-        captcha: captchaValue, // Enviar el captcha al backend
       });
 
       localStorage.setItem("token", response.data.token);
@@ -103,15 +78,6 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-            </div>
-
-            {/* reCAPTCHA */}
-            <div className="mb-4 flex justify-center">
-              <div
-                className="g-recaptcha"
-                data-sitekey="6Lei_ekqAAAAALOrJukUYMRZ8ogtggc5Z55cPudL"
-                data-callback="handleCaptcha"
-              ></div>
             </div>
 
             <button type="submit" className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">
