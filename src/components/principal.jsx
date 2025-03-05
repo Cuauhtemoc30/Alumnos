@@ -26,6 +26,7 @@ const HomePage = () => {
             <button onClick={() => handleNavigation("/")} className="block px-4 py-2 text-white hover:bg-gray-700 w-full text-left">Inicio</button>
             <button onClick={() => handleNavigation("/informacion")} className="block px-4 py-2 text-white hover:bg-gray-700 w-full text-left">Información</button>
             <button onClick={() => handleNavigation("/login")} className="block px-4 py-2 text-white hover:bg-gray-700 w-full text-left">Iniciar sesión</button>
+            <button onClick={() => handleNavigation("/registro")} className="block px-4 py-2 text-white hover:bg-gray-700 w-full text-left">Registro</button>
           </div>
         )}
       </div>
