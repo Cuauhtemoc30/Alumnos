@@ -91,7 +91,7 @@ const LoginPage = () => {
             {/* reCAPTCHA */}
             <div className="mb-4 flex justify-center">
               <ReCAPTCHA
-                sitekey="TU_SITE_KEY_AQUI" // Reemplaza con tu clave de sitio de Google reCAPTCHA
+                sitekey="6Lch9ekqAAAAAMgvbns274_MzddzdIKtdPnzG43U" // Reemplaza con tu clave de sitio de Google reCAPTCHA
                 onChange={(value) => setCaptchaValue(value)}
               />
             </div>
