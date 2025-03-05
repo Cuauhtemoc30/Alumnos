@@ -109,7 +109,7 @@ const LoginPage = () => {
             <div className="mb-4 flex justify-center">
               <div
                 className="g-recaptcha"
-                data-sitekey="6Lf4-OkqAAAAAJ5vNF1Bu5vk0fCLA5BIoPhAI3Uj"
+                data-sitekey="6Lei_ekqAAAAALOrJukUYMRZ8ogtggc5Z55cPudL"
                 data-callback="handleCaptcha"
               ></div>
             </div>
