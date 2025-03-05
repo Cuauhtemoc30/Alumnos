@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import ReCAPTCHA from "react-google-recaptcha";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../img/log-alum.png";
 
@@ -11,7 +10,25 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [captchaValue, setCaptchaValue] = useState(null);
+  const [captchaValue, setCaptchaValue] = useState("");
+
+  // Cargar el script de reCAPTCHA dinámicamente
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://www.google.com/recaptcha/api.js";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    // Asigna la función al objeto global window para que el callback funcione
+    window.handleCaptcha = (token) => {
+      setCaptchaValue(token);
+    };
+
+    return () => {
+      delete window.handleCaptcha;
+    };
+  }, []);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const handleNavigation = (path) => {
@@ -32,7 +49,7 @@ const LoginPage = () => {
       const response = await axios.post("https://github-back-alumnos-8.onrender.com/api/users/login", {
         email,
         password,
-        captcha: captchaValue, // Enviamos el captcha al backend para verificación
+        captcha: captchaValue, // Enviar el captcha al backend
       });
 
       localStorage.setItem("token", response.data.token);
@@ -90,10 +107,11 @@ const LoginPage = () => {
 
             {/* reCAPTCHA */}
             <div className="mb-4 flex justify-center">
-              <ReCAPTCHA
-                sitekey="6Lch9ekqAAAAAMgvbns274_MzddzdIKtdPnzG43U" // Reemplaza con tu clave de sitio de Google reCAPTCHA
-                onChange={(value) => setCaptchaValue(value)}
-              />
+              <div
+                className="g-recaptcha"
+                data-sitekey="6Lf4-OkqAAAAAJ5vNF1Bu5vk0fCLA5BIoPhAI3Uj"
+                data-callback="handleCaptcha"
+              ></div>
             </div>
 
             <button type="submit" className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">
