@@ -4,12 +4,13 @@ import axios from "axios";
 import { HomeIcon, ChatBubbleBottomCenterIcon, UserIcon } from "@heroicons/react/24/outline";
 import logo from "../img/log-alum.png";
 
+const API_BASE_URL = "https://github-back-alumnos-8.onrender.com/api"; // URL del backend en producción
+
 const ChatPage = () => {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
   const [recipientEmail, setRecipientEmail] = useState("");
   const [error, setError] = useState("");
-  const token = localStorage.getItem("token");
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -20,12 +21,19 @@ const ChatPage = () => {
       return;
     }
 
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Token no válido. Inicia sesión nuevamente.");
+      return;
+    }
+
     try {
       const response = await axios.post(
-        "https://github-back-alumnos-8.onrender.com/api/messages/send",
+        `${API_BASE_URL}/messages/send`,
         { recipientEmail, content },
         {
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -35,12 +43,11 @@ const ChatPage = () => {
       setRecipientEmail("");
       console.log("Mensaje enviado:", response.data);
     } catch (err) {
-      setError(err.response ? err.response.data.message : "Error al enviar el mensaje");
-      console.error(err);
+      setError(err.response?.data?.message || "Error al enviar el mensaje");
+      console.error("Error en la petición:", err.response || err);
     }
   };
 
-  // Función para cerrar sesión
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -69,12 +76,7 @@ const ChatPage = () => {
         {/* Header */}
         <div className="bg-[#34495E] p-4 flex justify-between items-center">
           <img src={logo} alt="Logo" className="h-12" />
-
-          {/* Botón de Cerrar Sesión */}
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm"
-          >
+          <button onClick={handleLogout} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm">
             Cerrar Sesión
           </button>
         </div>
