@@ -4,6 +4,8 @@ import axios from "axios";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../img/log-alum.png";
 
+const API_URL = process.env.REACT_APP_API_URL; // URL desde variables de entorno
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -22,7 +24,7 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const response = await axios.post("https://github-back-alumnos-8.onrender.com/api/users/login", {
+      const response = await axios.post(`${API_URL}/users/login`, {
         email,
         password,
       });
