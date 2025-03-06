@@ -27,15 +27,12 @@ const LoginPage = () => {
         password,
       });
 
-      console.log("Token recibido:", response.data.token); // Depuración
-
-      if (!response.data.token) {
+      const token = response.data.token;
+      if (!token) {
         throw new Error("No se recibió un token");
       }
 
-      sessionStorage.setItem("token", response.data.token);
-      sessionStorage.setItem("user", JSON.stringify(response.data.user));
-
+      sessionStorage.setItem("token", token);
       navigate("/dashboard");
     } catch (err) {
       setError("Correo o contraseña incorrectos");
