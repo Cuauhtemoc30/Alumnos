@@ -27,11 +27,20 @@ const LoginPage = () => {
         password,
       });
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      const token = response.data.token;
+      const user = response.data.user;
+
+      // Guardamos el token y el usuario en el localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Mostramos en consola los datos
+      console.log("Usuario logueado:", user);
+      console.log("Token recibido:", token);
 
       navigate("/dashboard");
     } catch (err) {
+      console.error("Error en el login:", err.response?.data || err.message);
       setError("Correo o contraseña incorrectos");
     }
   };
