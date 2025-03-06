@@ -4,8 +4,6 @@ import axios from "axios";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../img/log-alum.png";
 
-const API_URL = process.env.REACT_APP_API_URL; // URL desde variables de entorno
-
 const LoginPage = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,26 +22,24 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const response = await axios.post(`${API_URL}/users/login`, {
+      const response = await axios.post("https://github-back-alumnos-8.onrender.com/api/users/login", {
         email,
         password,
       });
 
-      const token = response.data.token;
-      const user = response.data.user;
+      console.log("Token recibido:", response.data.token); // Depuración
 
-      // Guardamos el token y el usuario en el localStorage
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      if (!response.data.token) {
+        throw new Error("No se recibió un token");
+      }
 
-      // Mostramos en consola los datos
-      console.log("Usuario logueado:", user);
-      console.log("Token recibido:", token);
+      sessionStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("user", JSON.stringify(response.data.user));
 
       navigate("/dashboard");
     } catch (err) {
-      console.error("Error en el login:", err.response?.data || err.message);
       setError("Correo o contraseña incorrectos");
+      console.error("Error de login:", err);
     }
   };
 
@@ -95,20 +91,8 @@ const LoginPage = () => {
               Log in
             </button>
           </form>
-          <div className="mt-4 text-center">
-            <span className="text-gray-700">¿No tienes una cuenta? </span>
-            <a href="/registro" className="text-green-600 font-semibold hover:underline">Regístrate</a>
-          </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-[#34495E] text-white text-center py-4">
-        <div className="container mx-auto">
-          <p>Contáctanos: (100-785-0941) | email: contacto@nuestroapp.com</p>
-          <p className="mt-2">Derechos Reservados</p>
-        </div>
-      </footer>
     </div>
   );
 };
