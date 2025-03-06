@@ -25,7 +25,7 @@ const Messages = () => {
     try {
       const response = await axios.get("https://github-back-alumnos-8.onrender.com/api/messages/user", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
       });
       setMessages(response.data); // Guardamos los mensajes recibidos
