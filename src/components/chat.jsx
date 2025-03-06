@@ -37,7 +37,7 @@ const ChatPage = () => {
         { recipientEmail, content },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: token,
           },
         }
       );
