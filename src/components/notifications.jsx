@@ -25,7 +25,7 @@ const Notifications = () => {
     try {
       const response = await axios.get("https://github-back-alumnos-8.onrender.com/api/notifications/user", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
       });
       setNotifications(response.data); // Guardamos las notificaciones recibidas
